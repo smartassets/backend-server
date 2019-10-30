@@ -1,0 +1,80 @@
+# File that defines endpoints for exposing Prometheus metrics for SQL result sets.
+# It talks to a [SQL Agent](https://github.com/chop-dbhi/sql-agent) service that
+# performs the query against the target database and returns the result set.
+# The `driver`, `connection`, `sql`, and `params` options defined for each endpoint
+# are passed to the service to execute the query. The other options are specific
+# to this service.
+
+# Name of the metric. Will be exposed as query_result_num_products
+- num_records_temperature:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: ""
+      sslmode: disable
+      database: postgres
+
+    # SQL string. Parameters are name-based (not positional) and must be
+    # prefixed with a colon. See `:category_id` in the query below for an example.
+    # Must return single row, single column
+    sql: >
+        select count(*) from temperature
+
+    # The time between query execution. This should be set relative to the frequency
+    # of expected updates and the required granularity of changes.
+    interval: 15s
+
+    # value on error, default is null
+    # if not null, when query has error, will use this value to indicate an error has occured
+    #value-on-error: '-1'
+
+- num_records_air:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: ""
+      sslmode: disable
+      database: postgres
+
+    # SQL string. Parameters are name-based (not positional) and must be
+    # prefixed with a colon. See `:category_id` in the query below for an example.
+    # Must return single row, single column
+    sql: >
+        select count(*) from air
+
+    # The time between query execution. This should be set relative to the frequency
+    # of expected updates and the required granularity of changes.
+    interval: 15s
+
+- num_records_dust:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: ""
+      sslmode: disable
+      database: postgres
+
+    # SQL string. Parameters are name-based (not positional) and must be
+    # prefixed with a colon. See `:category_id` in the query below for an example.
+    # Must return single row, single column
+    sql: >
+        select count(*) from dust
+
+    # The time between query execution. This should be set relative to the frequency
+    # of expected updates and the required granularity of changes.
+    interval: 15s

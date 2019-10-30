@@ -1,0 +1,101 @@
+// avro 
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "postgres-bulk-sink",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://localhost:8081",
+
+    "connection.url": "jdbc:postgresql://localhost:5432/postgres",
+    "connection.user": "i321665",
+    "connection.password": "9507Megaboy)",
+    "auto.create": "true",
+    "topics": "temperature",
+    "pk.mode": "kafka"
+    }
+}'
+
+// JSON
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "temperature"
+    }
+}'
+
+// string
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "postgres-bulk-sink",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+
+    "connection.url": "jdbc:postgresql://localhost:5432/postgres",
+    "connection.user": "i321665",
+    "connection.password": "9507Megaboy)",
+    "auto.create": "true",
+    "topics": "temperature"
+    }
+}'
+
+// avro converter - source
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source",
+"config" : {
+    "connector.class" : "io.confluent.connect.MqttSourceConnector",
+    "tasks.max" : "1",
+    "server.uri" : "tcp://127.0.0.1:1883",
+    "topics" : "temperature",
+    "kafka.topic" : "temperature",
+    "confluent.topic.bootstrap.servers": "localhost:9092",
+    "confluent.topic.replication.factor": "1",
+    "confluent.license":"",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://localhost:8081"
+    }
+}'
+
+// String converter - source
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source",
+"config" : {
+    "connector.class" : "io.confluent.connect.MqttSourceConnector",
+    "tasks.max" : "1",
+    "server.uri" : "tcp://127.0.0.1:1883",
+    "topics" : "temperature",
+    "kafka.topic" : "temperature",
+    "confluent.topic.bootstrap.servers": "localhost:9092",
+    "confluent.topic.replication.factor": "1",
+    "confluent.license":"",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter"
+    }
+}'
+
+// JSON converter - source
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source",
+"config" : {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max" : "1",
+    "mqtt.server.uri": "tcp://mosquitto:1883",
+    "mqtt.topics" : "temperature",
+    "kafka.topic" : "temperature",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "confluent.topic.bootstrap.servers": "kafka:9092",
+    "confluent.topic.replication.factor": 1
+    }
+}'
+
+
+kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic temperature

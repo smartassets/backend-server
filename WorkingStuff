@@ -1,0 +1,154 @@
+Working Sink Connector:
+// temp
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "temperature"
+    }
+}'
+
+// rfid
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink-rfid",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "rfid_user_access"
+    }
+}'
+
+// air
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink-air",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "air"
+    }
+}'
+
+// dust
+
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink-dust",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "dust"
+    }
+}'
+
+Working Source Connectors:
+// temperature
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source",
+"config" : {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max" : "1",
+    "mqtt.server.uri": "tcp://mosquitto:1883",
+    "mqtt.topics" : "temperature",
+    "kafka.topic" : "temperature",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "confluent.topic.bootstrap.servers": "kafka:9092",
+    "confluent.topic.replication.factor": 1
+    }
+}'
+
+// rfid
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-rfid-access",
+"config" : {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max" : "1",
+    "mqtt.server.uri": "tcp://mosquitto:1883",
+    "mqtt.topics" : "rfid_user_access",
+    "kafka.topic" : "rfid_user_access",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "confluent.topic.bootstrap.servers": "kafka:9092",
+    "confluent.topic.replication.factor": 1
+    }
+}'
+
+// air
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-air",
+"config" : {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max" : "1",
+    "mqtt.server.uri": "tcp://mosquitto:1883",
+    "mqtt.topics" : "air",
+    "kafka.topic" : "air",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "confluent.topic.bootstrap.servers": "kafka:9092",
+    "confluent.topic.replication.factor": 1
+    }
+}'
+
+// dust
+
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-dust",
+"config" : {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max" : "1",
+    "mqtt.server.uri": "tcp://mosquitto:1883",
+    "mqtt.topics" : "dust",
+    "kafka.topic" : "dust",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "confluent.topic.bootstrap.servers": "kafka:9092",
+    "confluent.topic.replication.factor": 1
+    }
+}'
+
+
+Example data passed:
+{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"data\"}],\"optional\":false,\"name\":\"temperature\"},\"payload\":{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}}
+
+{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"data\"}],\"optional\":false,\"name\":\"air\"},\"payload\":{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}}
+
+{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"data\"}],\"optional\":false,\"name\":\"dust\"},\"payload\":{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}}
+
+docker run \
+--rm \
+--network iot_default \
+confluentinc/cp-kafka:5.3.0 \
+kafka-console-consumer  --bootstrap-server kafka:9092 --topic connect-custom --from-beginning
+
+
+{\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"action\"},{\"type\":\"string\",\"optional\":false,\"field\":\"date\"}],\"optional\":false,\"name\":\"rfid_user_access\"},\"payload\":{\"devide_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"action\":\"started_working\",\"date\":\"19-09-19T06:29:35\"}}
+
+
+Solution ot license:
+- Run with only 1 broker - check how is this achieveable
+- Renew license - how and how much does it cost?
+- Try some other solutions - without kafka...
