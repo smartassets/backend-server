@@ -1,0 +1,9 @@
+*.log
+*.index
+*.timeindex
+*.snapshot
+*/datalog/*
+*zookeeper/*
+*kaka/data*
+*kaka/*
+*.DS_Store

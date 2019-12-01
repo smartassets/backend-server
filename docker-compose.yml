@@ -24,7 +24,7 @@ services:
       - ./zookeeper/data:/data
       - ./zookeeper/datalog:/datalog
   kafka:
-    image: confluentinc/cp-kafka:5.1.0
+    image: confluentinc/cp-kafka
     hostname: kafka
     container_name: kafka
     ports:
@@ -45,7 +45,7 @@ services:
     depends_on:
       - zookeeper
   kafka-connect:
-    image: confluentinc/cp-kafka-connect:5.1.0
+    image: confluentinc/cp-kafka-connect
     hostname: kafka-connect
     container_name: kafka-connect
     ports:
@@ -68,7 +68,7 @@ services:
       CONNECT_PLUGIN_PATH: '/usr/share/java,/etc/kafka-connect/jars'
       CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - /Users/i321665/Documents/Iot/jars:/etc/kafka-connect/jars
+      - ./jars:/etc/kafka-connect/jars
     depends_on:
       - zookeeper
       - kafka
@@ -76,14 +76,17 @@ services:
 
   postgres:
     image: "postgres:11"
-    container_name: "postgres"
+    container_name: ""
     hostname: postgres
     expose:
       - "5432"
     ports:
       - "5432:5432"
     volumes:
-      - my_dbdata:/usr/local/var/postgres/
+      - pgdata:/var/lib/postgresql/data
+      - pgconf:/etc/postgresql
+      - pglog:/var/log/postgresql
+      # - my_dbdata:/usr/local/var/postgres/data
 
   prometheus:
     image: prom/prometheus:v2.1.0
@@ -128,5 +131,12 @@ services:
     hostname: prometheussql
     volumes:
       - ./queries.yml:/queries.yml
+# volumes:
+#   my_dbdata:
 volumes:
-  my_dbdata:
+  pgdata:
+    driver: local
+  pgconf:
+    driver: local
+  pglog:
+    driver: local

@@ -1,7 +1,7 @@
 Working Sink Connector:
 // temp
 curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
-    "name" : "jdbc-sink",
+    "name" : "jdbc-sink-temp",
 "config" : {
     "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
 
@@ -68,6 +68,39 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
     }
 }'
 
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink-dust",
+"config" : {
+    "connector.class" : "io.aiven.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "dust"
+    }
+}'
+
+// humidity
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "jdbc-sink-humidity",
+"config" : {
+    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": true,
+
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "",
+    "auto.create": "true",
+    "topics": "humidity"
+    }
+}'
+
 Working Source Connectors:
 // temperature
 curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
@@ -130,9 +163,69 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
     }
 }'
 
+// New
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-dust-custom",
+"config" : {
+    "connector.class": "org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector",
+    "tasks.max" : "1",
+    "kafka.dust.topic": "dust",
+    "mqtt.client_id": "mqtt-kafka-power-dust",
+    "mqtt.server_uris": "tcp://mosquitto:1883",
+    "mqtt.topic": "dust",
+    "message_processor_class": "org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"
+    }
+}'
+
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-air-custom",
+"config" : {
+    "connector.class": "org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector",
+    "tasks.max" : "1",
+    "kafka.air.topic": "air",
+    "mqtt.client_id": "mqtt-kafka-power-air",
+    "mqtt.server_uris": "tcp://mosquitto:1883",
+    "mqtt.topic": "air",
+    "message_processor_class": "org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"
+    }
+}'
+
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-temp-custom",
+"config" : {
+    "connector.class": "org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector",
+    "tasks.max" : "1",
+    "kafka.temperature.topic": "temperature",
+    "mqtt.client_id": "mqtt-kafka-power-temp",
+    "mqtt.server_uris": "tcp://mosquitto:1883",
+    "mqtt.topic": "temperature",
+    "message_processor_class": "org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"
+    }
+}'
+
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
+    "name" : "mqtt-source-humidity-custom",
+"config" : {
+    "connector.class": "org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector",
+    "tasks.max" : "1",
+    "kafka.humidity.topic": "humidity",
+    "mqtt.client_id": "mqtt-kafka-power-humidity",
+    "mqtt.server_uris": "tcp://mosquitto:1883",
+    "mqtt.topic": "humidity",
+    "message_processor_class": "org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"
+    }
+}'
+
+curl -X DELETE http://localhost:8083/connectors/mqtt-source-dust-custom
+curl -X DELETE http://localhost:8083/connectors/jdbc-sink-dust
+docker exec kafka kafka-topics --delete --topic dust --zookeeper zookeeper:2181
 
 Example data passed:
 {\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"data\"}],\"optional\":false,\"name\":\"temperature\"},\"payload\":{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}}
+
+new schema:
+{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}
+
 
 {\"schema\":{\"type\":\"struct\",\"fields\":[{\"type\":\"string\",\"optional\":false,\"field\":\"device_id\"},{\"type\":\"string\",\"optional\":false,\"field\":\"data\"}],\"optional\":false,\"name\":\"air\"},\"payload\":{\"device_id\":\"31e1f8e5-71a9-49ca-9ecb-dc4fa188185d\",\"data\":\"30\"}}
 
@@ -149,6 +242,8 @@ kafka-console-consumer  --bootstrap-server kafka:9092 --topic connect-custom --f
 
 
 Solution ot license:
-- Run with only 1 broker - check how is this achieveable
-- Renew license - how and how much does it cost?
-- Try some other solutions - without kafka...
+- Run with only 1 broker - check how is this achieveable - cannot be achieved using docker...
+- Renew license - how and how much does it cost? - annual cost for 365 days
+- Try some other solutions - without kafka... -
+- Try with connectors which are not from Confluent platform - my connectors...
+- Try implementing sink connector using some standard databasa processor....
