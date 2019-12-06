@@ -1,17 +1,18 @@
 0
-15
+16
 __consumer_offsets 27 3
 docker-connect-offsets 20 101
-__consumer_offsets 41 193
-__consumer_offsets 33 109
-__consumer_offsets 23 169
-docker-connect-status 0 76
+__consumer_offsets 41 213
+__consumer_offsets 33 400
+__consumer_offsets 23 189
+docker-connect-status 0 93
 __consumer_offsets 16 113
 docker-connect-configs 0 263
-__consumer_offsets 37 376
-docker-connect-status 4 191
-docker-connect-status 1 217
+__consumer_offsets 37 403
+docker-connect-status 4 252
+docker-connect-status 1 281
 docker-connect-offsets 18 19
-docker-connect-status 2 511
+docker-connect-status 2 562
+__consumer_offsets 34 292
 __consumer_offsets 40 50
-docker-connect-status 3 463
+docker-connect-status 3 514
