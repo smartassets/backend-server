@@ -28,7 +28,7 @@ fi
 cd ${working_dir}/iot
 echo "Setting up server..."
 device_monitoring_image_exists=$(docker images device-monitoring | grep device-monitoring)
-if [[ ${device_monitoring_image_exists} != "" ]]; then
+if [[ ${device_monitoring_image_exists} == "" ]]; then
     echo "Preparing image for the device monitoring..."
     docker build -t device-monitoring .
 fi
