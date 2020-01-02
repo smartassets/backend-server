@@ -135,8 +135,9 @@ services:
   device-monitoring:
     image: device-monitoring
     hostname: iot-monitoring
+    container_name: device-monitoring
     ports:
-      - 9999:9999
+      - 9999:80
     depends_on:
       - postgres
 # volumes:
