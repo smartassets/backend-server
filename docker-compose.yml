@@ -131,6 +131,14 @@ services:
     hostname: prometheussql
     volumes:
       - ./queries.yml:/queries.yml
+  
+  device-monitoring:
+    image: device-monitoring
+    hostname: iot-monitoring
+    ports:
+      - 80:80
+    depends_on:
+      - postgres
 # volumes:
 #   my_dbdata:
 volumes:
