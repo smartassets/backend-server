@@ -133,11 +133,11 @@ services:
       - ./queries.yml:/queries.yml
   
   device-monitoring:
-    image: device-monitoring
-    hostname: iot-monitoring
+    image: device-monitoring:latest
+    hostname: device-monitoring
     container_name: device-monitoring
     ports:
-      - 9999:80
+      - 8081:80
     depends_on:
       - postgres
 # volumes:

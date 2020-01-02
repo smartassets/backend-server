@@ -1,2 +1,2 @@
-FROM nginx:1.15.8-alpine
-COPY ui/ /etc/nginx/html
+FROM nginx:alpine
+COPY ./ui/ /usr/share/nginx/html
