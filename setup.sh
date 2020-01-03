@@ -30,12 +30,14 @@ echo "Setting up server..."
 device_monitoring_image_exists=$(docker images device-monitoring | grep device-monitoring)
 if [[ ${device_monitoring_image_exists} == "" ]]; then
     echo "Preparing image for the device monitoring..."
-    docker build -t device-monitoring .
+    bash monitoring-ip-discovery.sh && docker build -t device-monitoring .
 fi
 kafka_started=$(docker ps -a | grep kafka);
 if [[ ${kafka_started} != "" ]]; then
-    echo "Docker swarm is running - restarting server..."
+    echo "Docker containers are running - restarting server..."
     docker-compose restart
+    echo "Updating containers"
+    docker-compose up -d
 else
     docker-compose up -d
 fi

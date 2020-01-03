@@ -22,11 +22,11 @@
 
     var knownDevices = [];
 
-    var SERVER_API=${API}
+    var SERVER_API="DEVICES_API"
 
     var statusFunction = function(deviceId) {
             console.log("Calling: http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId);
-            httpClient.get("http://192.168.1.109:8888/api/devices?deviceId="+deviceId, null, function(xhr) {
+            httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId, null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
                     console.log(JSON.parse( xhr.responseText ) );
                     $("#thetable").append(
@@ -43,7 +43,7 @@
     $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://192.168.1.109:8888/api/devices",
+            url: "http://"+SERVER_API+":8888/api/devices",
             success: function(msg) {
                     $.each(msg.devices, function(i, item){
                             console.log(item);
@@ -54,7 +54,7 @@
     });
 
     var addNewDeviceFunction = function(){
-            httpClient.get("http://192.168.1.109:8888/api/devices", null, function(xhr) {
+            httpClient.get("http://"+SERVER_API+":8888/api/devices", null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
                     console.log(JSON.parse( xhr.responseText ) );
                     $.each(responseObj.devices, function(i, item){
@@ -71,7 +71,7 @@
             $("tr.row100.body").each(function() {
                     var trLocator = $(this);
                     var deviceId = trLocator.find("td.cell100.column1").html();
-                    httpClient.get("http://192.168.1.109:8888/api/devices?deviceId="+deviceId, null, function(xhr) {
+                    httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId, null, function(xhr) {
                             var responseObj = JSON.parse( xhr.responseText );
                             console.log(JSON.parse( xhr.responseText ) );
                             trLocator.find("td.cell100.column3.status").text(responseObj.status);
@@ -82,7 +82,7 @@
     $("body").on("click", "img.reload", function(){
             console.log("Clicked reload: " + $(this).attr('id'));
             var imageLocator = $(this);
-            httpClient.get("http://192.168.1.109:8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
+            httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
                     console.log(responseObj);
                     imageLocator.closest("tr").find("td.cell100.column3.status").text(responseObj.status);
@@ -93,7 +93,7 @@
     $("body").on("click", "img.delete", function(){
             console.log("Clicked delete: " + $(this).attr('id'));
             var imageLocator = $(this);
-            httpClient.delete("http://192.168.1.109:8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
+            httpClient.delete("http://"+SERVER_API+":8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
                     imageLocator.closest("tr").remove();
                     knownDevices.pop(imageLocator.attr('id'));
             });
