@@ -27,11 +27,11 @@ fi
 
 cd ${working_dir}/iot
 echo "Setting up server..."
-device_monitoring_image_exists=$(docker images device-monitoring | grep device-monitoring)
-if [[ ${device_monitoring_image_exists} == "" ]]; then
+# device_monitoring_image_exists=$(docker images device-monitoring | grep device-monitoring)
+# if [[ ${device_monitoring_image_exists} == "" ]]; then
     echo "Preparing image for the device monitoring..."
     bash monitoring-ip-discovery.sh && docker build -t device-monitoring .
-fi
+# fi
 kafka_started=$(docker ps -a | grep kafka);
 if [[ ${kafka_started} != "" ]]; then
     echo "Docker containers are running - restarting server..."
