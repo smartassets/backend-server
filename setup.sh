@@ -30,6 +30,9 @@ echo "Setting up server..."
 # device_monitoring_image_exists=$(docker images device-monitoring | grep device-monitoring)
 # if [[ ${device_monitoring_image_exists} == "" ]]; then
     echo "Preparing image for the device monitoring..."
+    docker stop device-monitoring
+    docker rm device-monitoring
+    docker rmi device-monitoring
     bash monitoring-ip-discovery.sh && docker build -t device-monitoring .
 # fi
 kafka_started=$(docker ps -a | grep kafka);
