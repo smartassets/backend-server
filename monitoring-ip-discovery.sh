@@ -9,6 +9,13 @@ for i in ${ips}; do
         export API=$i;
         echo "lalalalalallaalla"
         sed -i '' -e "s/DEVICES_API/$i/g" ${PWD}/ui/js/main.js; 
+        echo "Setting configuration for the devices..."
+        local_ip=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1');
+        curl --header "Content-Type: application/json" \
+            --request POST \
+            --data "{\"mqttserver\":\"${local_ip}\"}" \
+            http://$i:8888/api/config
+
     fi; 
 done;
 
