@@ -25,7 +25,7 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": true,
 
-    "connection.url": "jdbc:postgresql://locahost:5432/postgres?user=postgres",
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres?user=postgres",
     "auto.create": "true",
     "topics": "temperature"
     }
