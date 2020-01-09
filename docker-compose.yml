@@ -68,14 +68,14 @@ services:
       CONNECT_PLUGIN_PATH: '/usr/share/java,/etc/kafka-connect/jars'
       CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - ./jars:/etc/kafka-connect/jars
+      - ./jars/:/etc/kafka-connect/jars/
     depends_on:
       - zookeeper
       - kafka
       - mosquitto
 
   postgres:
-    image: "postgres:11"
+    image: "postgres"
     container_name: ""
     hostname: postgres
     expose:
