@@ -60,7 +60,7 @@ while true; do
 done
 
 echo "Setting up connectors..."
-curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"jdbc-sink-humidity","config":{"connector.class":"io.confluent.connect.jdbc.JdbcSinkConnector","value.converter":"org.apache.kafka.connect.json.JsonConverter","value.converter.schemas.enable":true,"connection.url":"jdbc:postgresql://postgres:5432/postgres","connection.user":"postgres","connection.password":"","auto.create":"true","topics":"humidity"}}' > /dev/null
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"jdbc-sink-humidity","config":{"connector.class":"io.aiven.connect.jdbc.JdbcSinkConnector","value.converter":"org.apache.kafka.connect.json.JsonConverter","value.converter.schemas.enable":true,"connection.url":"jdbc:postgresql://postgres:5432/postgres","connection.user":"postgres","connection.password":"","auto.create":"true","topics":"humidity"}}' > /dev/null
 check_error 'Error setting connector jdbc-sink-humidity!' ${previous_dir}
 
 curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"mqtt-source-humidity-custom","config":{"connector.class":"org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector","tasks.max":"1","kafka.humidity.topic":"humidity","mqtt.client_id":"mqtt-kafka-power-humidity","mqtt.server_uris":"tcp://mosquitto:1883","mqtt.topic":"humidity","message_processor_class":"org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"}}' > /dev/null
@@ -69,7 +69,7 @@ check_error 'Error setting connector mqtt-source-humidity-custom!' ${previous_di
 curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"mqtt-source-temp-custom","config":{"connector.class":"org.korlenko.kafka.connector.mqtt.connector.MqttSourceConnector","tasks.max":"1","kafka.temperature.topic":"temperature","mqtt.client_id":"mqtt-kafka-power-temp","mqtt.server_uris":"tcp://mosquitto:1883","mqtt.topic":"temperature","message_processor_class":"org.korlenko.kafka.connector.mqtt.processor.impl.MqttJsonProcessor"}}' > /dev/null
 check_error 'Error setting connector mqtt-source-temp-custom!' ${previous_dir}
 
-curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"jdbc-sink-temp","config":{"connector.class":"io.confluent.connect.jdbc.JdbcSinkConnector","value.converter":"org.apache.kafka.connect.json.JsonConverter","value.converter.schemas.enable":true,"connection.url":"jdbc:postgresql://postgres:5432/postgres","connection.user":"postgres","connection.password":"","auto.create":"true","topics":"temperature"}}' > /dev/null
+curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{"name":"jdbc-sink-temp","config":{"connector.class":"io.aiven.connect.jdbc.JdbcSinkConnector","value.converter":"org.apache.kafka.connect.json.JsonConverter","value.converter.schemas.enable":true,"connection.url":"jdbc:postgresql://postgres:5432/postgres","connection.user":"postgres","connection.password":"","auto.create":"true","topics":"temperature"}}' > /dev/null
 check_error 'Error setting connector jdbc-sink-temp!' ${previous_dir}
 
 
