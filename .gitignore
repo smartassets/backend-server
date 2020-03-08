@@ -4,6 +4,7 @@
 *.snapshot
 */datalog/*
 *zookeeper/*
-*kaka/data*
-*kaka/*
-*.DS_Store
+*kafka/data*
+*kafka/*
+.DS_Store
+*/*.DS_Store
