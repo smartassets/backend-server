@@ -137,7 +137,7 @@ services:
     container_name: iot-monitoring
     hostname: monitoring-backend
     build:
-      context: iot-monitoring/
+      context: backend/
       dockerfile: Dockerfile.monitoring
     environment:
       spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
