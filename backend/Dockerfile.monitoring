@@ -1,0 +1,5 @@
+FROM openjdk
+COPY controller/target/controller-0.0.1-SNAPSHOT.jar /opt/monitoring/lib/controller-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java"]
+CMD ["-jar", "/opt/monitoring/lib/controller-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8082

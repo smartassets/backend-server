@@ -22,11 +22,12 @@
 
     var knownDevices = [];
 
-    var SERVER_API="DEVICES_API"
+    var SERVER_API="localhost"
+    var SERVER_PORT="8082"
 
     var statusFunction = function(deviceId) {
-            console.log("Calling: http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId);
-            httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId, null, function(xhr) {
+            console.log("Calling: http://"+SERVER_API+":"+SERVER_PORT+"/api/devices?deviceId="+deviceId);
+            httpClient.get("http://"+SERVER_API+":"+SERVER_PORT+"/api/devices/"+deviceId, null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
                     console.log(JSON.parse( xhr.responseText ) );
                     $("#thetable").append(
@@ -43,7 +44,7 @@
     $.ajax({
             type: "GET",
             dataType: "json",
-            url: "http://"+SERVER_API+":8888/api/devices",
+            url: "http://"+SERVER_API+":"+SERVER_PORT+"/api/devices",
             success: function(msg) {
                     $.each(msg.devices, function(i, item){
                             console.log(item);
@@ -54,14 +55,14 @@
     });
 
     var addNewDeviceFunction = function(){
-            httpClient.get("http://"+SERVER_API+":8888/api/devices", null, function(xhr) {
+            httpClient.get("http://"+SERVER_API+":"+SERVER_PORT+"/api/devices", null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
-                    console.log(JSON.parse( xhr.responseText ) );
-                    $.each(responseObj.devices, function(i, item){
-                            console.log(item);
-                            if (!knownDevices.includes(item)) {
-                                    statusFunction(item);
-                                    knownDevices.push(item);
+                //     console.log(JSON.parse( xhr.responseText ) );
+                    $.each(responseObj, function(i, item){
+                            console.log(item.deviceGuid);
+                            if (!knownDevices.includes(item.deviceGuid)) {
+                                    statusFunction(item.deviceGuid);
+                                    knownDevices.push(item.deviceGuid);
                             }
                     });
             });
@@ -71,7 +72,7 @@
             $("tr.row100.body").each(function() {
                     var trLocator = $(this);
                     var deviceId = trLocator.find("td.cell100.column1").html();
-                    httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+deviceId, null, function(xhr) {
+                    httpClient.get("http://"+SERVER_API+":"+SERVER_PORT+"/api/devices/"+deviceId, null, function(xhr) {
                             var responseObj = JSON.parse( xhr.responseText );
                             console.log(JSON.parse( xhr.responseText ) );
                             trLocator.find("td.cell100.column3.status").text(responseObj.status);
@@ -82,7 +83,7 @@
     $("body").on("click", "img.reload", function(){
             console.log("Clicked reload: " + $(this).attr('id'));
             var imageLocator = $(this);
-            httpClient.get("http://"+SERVER_API+":8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
+            httpClient.get("http://"+SERVER_API+":"+SERVER_PORT+"/api/devices/"+$(this).attr('id'), null, function(xhr) {
                     var responseObj = JSON.parse( xhr.responseText );
                     console.log(responseObj);
                     imageLocator.closest("tr").find("td.cell100.column3.status").text(responseObj.status);
@@ -93,7 +94,7 @@
     $("body").on("click", "img.delete", function(){
             console.log("Clicked delete: " + $(this).attr('id'));
             var imageLocator = $(this);
-            httpClient.delete("http://"+SERVER_API+":8888/api/devices?deviceId="+$(this).attr('id'), null, function(xhr) {
+            httpClient.delete("http://"+SERVER_API+":"+SERVER_PORT+"/api/devices/"+$(this).attr('id'), null, function(xhr) {
                     imageLocator.closest("tr").remove();
                     knownDevices.pop(imageLocator.attr('id'));
             });

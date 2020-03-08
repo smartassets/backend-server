@@ -82,12 +82,14 @@ services:
       - "5432"
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: iloveiot
     volumes:
       - pgdata:/var/lib/postgresql/data
       - pgconf:/etc/postgresql
       - pglog:/var/log/postgresql
       # - my_dbdata:/usr/local/var/postgres/data
-
+    
   prometheus:
     image: prom/prometheus:v2.1.0
     container_name: prometheus
@@ -131,15 +133,27 @@ services:
     hostname: prometheussql
     volumes:
       - ./queries.yml:/queries.yml
-  
-  device-monitoring:
-    image: device-monitoring:latest
-    hostname: device-monitoring
-    container_name: device-monitoring
+  monitoring:
+    container_name: iot-monitoring
+    hostname: monitoring-backend
+    build:
+      context: iot-monitoring/
+      dockerfile: Dockerfile.monitoring
+    environment:
+      spring.datasource.url: jdbc:postgresql://localhost:5432/postgres
+      spring.datasource.username: postgres
+      spring.datasource.password: iloveiot
+      spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      spring.jpa.hibernate.ddl-auto: update
+      server.port: 8082
+    image: iot-monitoring:latest
+    expose:
+      - 8082
     ports:
-      - 8081:80
+      - 8082:8082
     depends_on:
       - postgres
+    network_mode: host
 # volumes:
 #   my_dbdata:
 volumes:
