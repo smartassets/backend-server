@@ -24,7 +24,7 @@ services:
       - ./zookeeper/data:/data
       - ./zookeeper/datalog:/datalog
   kafka:
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-kafka:5.3.0
     hostname: kafka
     container_name: kafka
     ports:
@@ -45,7 +45,7 @@ services:
     depends_on:
       - zookeeper
   kafka-connect:
-    image: confluentinc/cp-kafka-connect
+    image: confluentinc/cp-kafka-connect:5.3.0
     hostname: kafka-connect
     container_name: kafka-connect
     ports:
@@ -76,7 +76,7 @@ services:
 
   postgres:
     image: "postgres"
-    container_name: ""
+    container_name: postgres
     hostname: postgres
     expose:
       - "5432"
