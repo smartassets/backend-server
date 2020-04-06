@@ -1,0 +1,6 @@
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/task/MqttSourceTask.java
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/processor/impl/MqttJsonProcessor.java
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/connector/MqttSourceConnector.java
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/processor/MqttProcessor.java
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/configuration/MqttSourceConfiguration.java
+/Users/i321665/Documents/Iot/custom-connectors/kafka-mqtt-connector/src/main/java/org/korlenko/kafka/connector/mqtt/helper/VersionHelper.java

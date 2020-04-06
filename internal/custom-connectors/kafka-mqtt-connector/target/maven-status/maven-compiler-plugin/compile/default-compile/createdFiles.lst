@@ -1,0 +1,7 @@
+org/korlenko/kafka/connector/mqtt/connector/MqttSourceConnector.class
+org/korlenko/kafka/connector/mqtt/processor/impl/MqttJsonProcessor$1.class
+org/korlenko/kafka/connector/mqtt/helper/VersionHelper.class
+org/korlenko/kafka/connector/mqtt/configuration/MqttSourceConfiguration.class
+org/korlenko/kafka/connector/mqtt/processor/impl/MqttJsonProcessor.class
+org/korlenko/kafka/connector/mqtt/processor/MqttProcessor.class
+org/korlenko/kafka/connector/mqtt/task/MqttSourceTask.class
