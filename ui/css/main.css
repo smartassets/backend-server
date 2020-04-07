@@ -63,7 +63,7 @@ ul, li {
 input {
   display: block;
 	outline: none;
-	border: none !important;
+	/* border: none !important; */
 }
 
 textarea {
@@ -527,4 +527,42 @@ th, td {
 
 .table100.ver5 .ps__rail-y .ps__thumb-y::before {
   background-color: #cccccc;
+}
+
+.panel-heading span
+{
+    margin-top: -26px;
+    font-size: 15px;
+    margin-right: -12px;
+}
+
+.clickable {
+    background: rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#employees {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#employees td, #employees th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#employees tr:nth-child(even){background-color: #f2f2f2;}
+
+#employees tr:hover {background-color: #ddd;}
+
+#employees th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4272d7;
+  color: white;
 }

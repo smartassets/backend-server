@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+    <title>Sidebar template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/new.css">
+    <link href="css/form-validation.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!--===============================================================================================-->	
+        <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="css/util.css">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->
+
+      <!-- Style -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" /> -->
+    <link href="css/fresh-bootstrap-table.css" rel="stylesheet" />
+
+    <!-- Fonts and icons -->
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,700,300" rel="stylesheet" type="text/css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>
+</head>
+
+<body class="bg-light">
+    <div class="page-wrapper chiller-theme toggled">
+        <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <div class="sidebar-brand">
+                    <a href="#">SMART ASSETS</a>
+                    <div id="close-sidebar">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                <div class="sidebar-header">
+                    <div class="user-pic">
+                        <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                            alt="User picture">
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Smart
+                            <strong>Assets</strong>
+                        </span>
+                        <span class="user-role">Administrator</span>
+                        <span class="user-status">
+                            <i class="fa fa-circle"></i>
+                            <span>Online</span>
+                        </span>
+                    </div>
+                </div>
+                <!-- sidebar-search  -->
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="header-menu">
+                            <span>General</span>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fa fa-tachometer-alt"></i>
+                                <span>Dashboards</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="machine-operations-dashboards">Machine Operations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="env-dashboards">Environment</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="device-monitoring-dashboards">Device Monitoring</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        </li>
+
+                        <li>
+                            <a href="#" id="charts-nav">
+                                <i class="fa fa-chart-line"></i>
+                                <span>Charts</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="#" id="operations">
+                                <i class="fa fa-cog"></i>
+                                <span>Operations</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="about">
+                                <i class="fa fa-globe"></i>
+                                <span>About</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- sidebar-menu  -->
+            </div>
+            <!-- sidebar-content  -->
+            <div class="sidebar-footer">
+                <a href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-pill badge-warning notification">3</span>
+                </a>
+                <a href="#">
+                    <i class="fa fa-envelope"></i>
+                    <span class="badge badge-pill badge-success notification">7</span>
+                </a>
+                <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <span class="badge-sonar"></span>
+                </a>
+                <a href="#">
+                    <i class="fa fa-power-off"></i>
+                </a>
+            </div>
+        </nav>
+        <!-- sidebar-wrapper  -->
+        <main class="page-content">
+            
+            <div class="container-fluid">
+                <div class="operations-dashboard">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card border-success mx-sm-1 p-3">
+                                    <div class="text-success text-center mt-3"><h4>Material success rate for today</h4></div>
+                                    <div class="text-success text-center mt-2"><h1 id="succ-rate-perc">60%</h1></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                    <div class="card border-danger mx-sm-1 p-3">
+                                        <div class="text-danger text-center mt-3"><h4>Material defect rate for today</h4></div>
+                                        <div class="text-danger text-center mt-2"><h1 id="def-rate-perc">30%</h1></div>
+                                    </div>
+                                </div>
+                            <div class="col-md-3">
+                                <div class="card border-info mx-sm-1 p-3">
+                                    <div class="text-info text-center mt-3"><h4>Total input material for today</h4></div>
+                                    <div class="text-info text-center mt-2"><h1 id="total-count">234</h1></div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="card border-warning mx-sm-1 p-3">
+                                    <div class="text-warning text-center mt-3"><h4>Total machine operations</h4></div>
+                                    <div class="text-warning text-center mt-2"><h1 id="machine-ops-count">346</h1></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <div class="row justify-content-md-center">
+                            <canvas id="totalOperationsChart" style="display: block; height: 200px; width: 600px;"></canvas>
+                        </div>
+        
+                        <div class="row justify-content-md-center">
+                            <table id="employees">
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Success rate</th> 
+                                    <th>Defect rate</th>
+                                    <th>Total working hours</th>
+                                </tr>
+                            </table>
+                        </div>
+                </div>
+                <div class="main-wrapper">
+                    <h2>Smart Assets</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <p>Smart Assets brings the IoT in your bussiness</p>
+                            <p> More info on 
+                                <a href="https://github.com/smartassets/backend-server" target="_blank">
+                                    Github</a></p>
+                        </div>
+                    </div>
+                    <h5>More Info</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <p>To be continued...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-table100">
+                    <div class="wrap-table100">
+                        <div class="table100 ver1 m-b-110">
+                            <div class="table100-head">
+                                <table>
+                                    <thead>
+                                        <tr class="row100 head">
+                                            <th class="cell100 column1">Device id</th>
+                                            <th class="cell100 column2">Description</th>
+                                            <th class="cell100 column3">Status</th>
+                                            <th class="cell100 column4">Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+        
+                            <div class="table100-body js-pscroll">
+                                <table id="thetable">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="py-5 text-center">
+                        <h2>Operation examine material submission form</h2>
+                        <p class="lead">This form grants easy way to submit defect and success rate of material for machine operation. It provides options to choose on which machine the operation was executed, which employee executed the operation and with what material the operation was executed. </p>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-8 order-md-1">
+                        <h4 class="mb-3">Operation information</h4>
+                        
+                
+                            <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="machine">Machine</label>
+                                <select class="custom-select d-block w-100" id="machine" required>
+                                <option value="">Choose...</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                Please select a valid machine number.
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="employee">Employee</label>
+                                <select class="custom-select d-block w-100" id="employee-selection-operation" required>
+                                <option value="">Choose...</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                Please provide a valid employee.
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="material">Material</label>
+                                <select class="custom-select d-block w-100" id="material" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Lense Type A">Lense Type A</option>
+                                    <option value="Lense Type B">Lense Type B</option>
+                                    <option value="Lense Type C">Lense Type C</option>
+                                    <option value="Lense Type D">Lense Type D</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                Please provide a valid industrial material.
+                                </div>
+                            </div>
+                            </div>
+                            <hr class="mb-4">
+                            <h4 class="mb-3">Working operation rate(defect/success rate)</h4>
+                
+                            <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="success-rate">Success rate material count</label>
+                                <input type="text" class="custom-text" id="success-rate" placeholder="">
+                                <small class="text-muted">Number of success rate examined</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="defect-rate">Defect rate material count</label>
+                                <input type="text" class="custom-text" id="defect-rate" placeholder="">
+                                <small class="text-muted">Number of defect rate examined</small>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="overall-material">Overall material</label>
+                                <input type="text" class="custom-text" id="overall-material" placeholder="">
+                            </div>
+                            </div>
+                            <hr class="mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="submit-machine-rate">Submit material</button>
+                        </form>
+                        </div>
+                    </div>
+                
+                    <footer class="my-5 pt-5 text-muted text-center text-small">
+                    </footer>
+                </div>
+                <div class="container-charts">
+                    <!-- <div class="row"> -->
+                        <div id="overall-materials" class="col-md-6 mb-3">
+                            <canvas id="materialsByDate" width="400" height="400"></canvas>
+                        </div>
+                        
+                    <!-- </div> -->
+                    <div class="row">
+                        <div id="materialsByMachine" class="col-md-6 mb-3">
+                                <div class="col-md-3 mb-3">
+                                    <label for="machine-selection-chart">Machine</label>
+                                    <select class="custom-select d-block w-100" id="machine-selection-chart" required>
+                                        <option value="">Choose...</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                    Please select a valid machine.
+                                    </div>
+                                </div>
+                                <canvas id="materialsByMachineCanvas" width="400" height="400"></canvas>
+                        </div>  
+                        <div id="materialsByPerson" class="col-md-6 mb-3">
+                                <div class="col-md-3 mb-3">
+                                    <label for="employee-selection-chart">Employee</label>
+                                    <select class="custom-select d-block w-100" id="employee-selection-chart" required>
+                                        <option value="">Choose...</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a valid employee.
+                                    </div>
+                                </div>
+                                <canvas id="materialsByPersonCanvas" width="400" height="400"></canvas>
+                            </div> 
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        <!-- page-content" -->
+    </div>
+    <!-- page-wrapper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.min.js" integrity="sha256-ifihHN6L/pNU1ZQikrAb7CnyMBvisKG3SUAab0F3kVU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" ></script>
+    <script src="js/new.js">
+    </script>
+
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="js/HttpClient.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        $('.js-pscroll').each(function(){
+            var ps = new PerfectScrollbar(this);
+            $(window).on('resize', function(){
+                ps.update();
+            })
+        });
+        $(".form-control").css("border", "25px solid #ced4da")
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+       
+    </script>
+
+    <script src="js/main.js"></script>
+    <script src="js/operations-submission.js"></script>
+    <script src="js/charts.js"></script>
+
+    <script>
+         $("#employee-selection-chart").change(function(){
+            materialsByPerson();
+        });
+
+        $("#machine-selection-chart").change(function(){
+            materialsByMachine();
+        });
+    </script>
+</body>
+
+</html>

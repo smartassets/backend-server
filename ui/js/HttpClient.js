@@ -48,6 +48,40 @@ httpClient = {
 		xhr.send(queryString);
 	},
 
+	jsonPost: function( url, data, callback ) {
+		var xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function () {
+			var readyState = xhr.readyState;
+
+			if (readyState == 4) {
+				callback(xhr);
+			}
+		};
+		
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('content-type', 'application/json');
+		var data = JSON.stringify(data);
+		xhr.send(data);
+	},
+
+	jsonPut: function( url, data, callback ) {
+		var xhr = new XMLHttpRequest();
+		
+		xhr.onreadystatechange = function () {
+			var readyState = xhr.readyState;
+
+			if (readyState == 4) {
+				callback(xhr);
+			}
+		};
+		
+		xhr.open('PUT', url, true);
+		xhr.setRequestHeader('content-type', 'application/json');
+		var data = JSON.stringify(data);
+		xhr.send(data);
+	},
+
 	createCORSRequest: function(method, url) {
 		var xhr = new XMLHttpRequest();
 		if ("withCredentials" in xhr) {
