@@ -18,7 +18,7 @@ public class DefaultFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Headers", "Content-Type");
-        response.addHeader("Access-Control-Allow-Methods", "OPTIONS, DELETE");
+        response.addHeader("Access-Control-Allow-Methods", "PUT, OPTIONS, DELETE");
         filterChain.doFilter(request, response);
     }
 
