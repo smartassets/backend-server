@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +20,12 @@ public class MachineOperation extends AuditModel {
     @Column(name = "id", updatable = false, nullable = false)
     private long id;
 
+    @ManyToOne
+    @JoinColumn(name="employee_id")
     private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name="machine_id")
     private Machine machine;
     private String inputMaterialType;
     private long totalInputMaterialQuantity;

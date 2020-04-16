@@ -1,12 +1,11 @@
 package org.korlenko.kafka.connector.mqtt.configuration;
 
+import java.util.Map;
+
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
 import org.korlenko.kafka.connector.mqtt.processor.impl.EnvironmentDataMqttJsonProcessor;
-
-import java.util.Map;
-
 
 /**
  * MQTT connector configuration class
@@ -25,29 +24,26 @@ public class MqttSourceConfiguration extends AbstractConfig {
     public static final String MQTT_QUALITY_OF_SERVICE = "mqtt.qos";
     public static final String MESSAGE_PROCESSOR_CLASS = "message_processor_class";
     public static final String KAFKA_TOPIC_TEMPLATE = "kafka.%s.topic";
-
+    public static final String DB_CONNECTION_URL = "connection.url";
+    public static final String DB_CONNECTION_USERNAME = "connection.username";
+    public static final String DB_CONNECTION_PASSWORD = "connection.password";
 
     private static final ConfigDef CONFIG_DEF = new ConfigDef();
     private final Map<String, String> props;
 
     static {
-        CONFIG_DEF
-                .define(MQTT_CLEAN_SESSION, ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.HIGH,
-                        "Enabling session clean-up")
-                .define(MQTT_SERVER_URIS, ConfigDef.Type.STRING, "tcp://localhost:1883",
-                        ConfigDef.Importance.HIGH, "MQTT server url")
-                .define(MQTT_TOPIC, ConfigDef.Type.STRING, "#", ConfigDef.Importance.HIGH,
-                        "MQTT topic")
-                .define(MESSAGE_PROCESSOR_CLASS, ConfigDef.Type.CLASS, EnvironmentDataMqttJsonProcessor.class,
-                        ConfigDef.Importance.HIGH, "Processor")
-                .define(MQTT_CLIENT_ID, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH,
-                        "MQTT client id")
-                .define(MQTT_CONNECTION_TIMEOUT, ConfigDef.Type.INT, 30, ConfigDef.Importance.HIGH,
-                        "Connection timeout")
-                .define(MQTT_KEEP_ALIVE_INTERVAL, ConfigDef.Type.INT, 60, ConfigDef.Importance.HIGH,
-                        "Keep alive interval")
-                .define(MQTT_QUALITY_OF_SERVICE, ConfigDef.Type.INT, 1, ConfigDef.Importance.HIGH,
-                        "MQTT qos");
+        CONFIG_DEF.define(MQTT_CLEAN_SESSION, ConfigDef.Type.BOOLEAN, true, ConfigDef.Importance.HIGH, "Enabling session clean-up")
+                  .define(MQTT_SERVER_URIS, ConfigDef.Type.STRING, "tcp://localhost:1883", ConfigDef.Importance.HIGH, "MQTT server url")
+                  .define(MQTT_TOPIC, ConfigDef.Type.STRING, "#", ConfigDef.Importance.HIGH, "MQTT topic")
+                  .define(MESSAGE_PROCESSOR_CLASS, ConfigDef.Type.CLASS, EnvironmentDataMqttJsonProcessor.class, ConfigDef.Importance.HIGH,
+                          "Processor")
+                  .define(MQTT_CLIENT_ID, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, "MQTT client id")
+                  .define(MQTT_CONNECTION_TIMEOUT, ConfigDef.Type.INT, 30, ConfigDef.Importance.HIGH, "Connection timeout")
+                  .define(MQTT_KEEP_ALIVE_INTERVAL, ConfigDef.Type.INT, 60, ConfigDef.Importance.HIGH, "Keep alive interval")
+                  .define(MQTT_QUALITY_OF_SERVICE, ConfigDef.Type.INT, 1, ConfigDef.Importance.HIGH, "MQTT qos")
+                  .define(DB_CONNECTION_URL, ConfigDef.Type.STRING, 1, ConfigDef.Importance.HIGH, "Database connection URL")
+                  .define(DB_CONNECTION_USERNAME, ConfigDef.Type.STRING, 1, ConfigDef.Importance.HIGH, "Database connection username")
+                  .define(DB_CONNECTION_PASSWORD, ConfigDef.Type.STRING, 1, ConfigDef.Importance.HIGH, "Database connection password");
     }
 
     /**
@@ -60,8 +56,7 @@ public class MqttSourceConfiguration extends AbstractConfig {
             String key = String.format(KAFKA_TOPIC_TEMPLATE, topic);
             System.out.println(key);
             if (!props.containsKey(key)) {
-                throw new ConfigException(
-                        String.format(" No topic has been found for [%s]", key));
+                throw new ConfigException(String.format(" No topic has been found for [%s]", key));
             }
         }
     }

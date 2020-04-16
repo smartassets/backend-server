@@ -1,12 +1,5 @@
-# File that defines endpoints for exposing Prometheus metrics for SQL result sets.
-# It talks to a [SQL Agent](https://github.com/chop-dbhi/sql-agent) service that
-# performs the query against the target database and returns the result set.
-# The `driver`, `connection`, `sql`, and `params` options defined for each endpoint
-# are passed to the service to execute the query. The other options are specific
-# to this service.
-
-# Name of the metric. Will be exposed as query_result_num_products
-- num_records_temperature:
+# Temperature overview
+- num_records_temperature_per_device:
     # Name of the driver to use.
     driver: postgresql
 
@@ -15,25 +8,18 @@
       host: postgres
       port: 5432
       user: postgres
-      password: ""
+      password: iloveiot
       sslmode: disable
       database: postgres
 
-    # SQL string. Parameters are name-based (not positional) and must be
-    # prefixed with a colon. See `:category_id` in the query below for an example.
-    # Must return single row, single column
     sql: >
-        select count(*) from temperature
+        SELECT device_id, count(data) as cnt FROM temperature GROUP BY device_id
 
-    # The time between query execution. This should be set relative to the frequency
-    # of expected updates and the required granularity of changes.
     interval: 15s
 
-    # value on error, default is null
-    # if not null, when query has error, will use this value to indicate an error has occured
-    #value-on-error: '-1'
+    data-field: cnt
 
-- num_records_above_30:
+- average_temperature_per_device:
     # Name of the driver to use.
     driver: postgresql
 
@@ -42,21 +28,18 @@
       host: postgres
       port: 5432
       user: postgres
-      password: ""
+      password: iloveiot
       sslmode: disable
       database: postgres
 
-    # SQL string. Parameters are name-based (not positional) and must be
-    # prefixed with a colon. See `:category_id` in the query below for an example.
-    # Must return single row, single column
     sql: >
-        select count(*) from temperature where data > '30'
+        SELECT device_id, AVG(CAST(data as INT)) as avg FROM temperature GROUP BY device_id
 
-    # The time between query execution. This should be set relative to the frequency
-    # of expected updates and the required granularity of changes.
-    interval: 5s
+    interval: 15s
 
-- normal_temperature:
+    data-field: avg
+
+- average_temperature:
     # Name of the driver to use.
     driver: postgresql
 
@@ -65,21 +48,16 @@
       host: postgres
       port: 5432
       user: postgres
-      password: ""
+      password: iloveiot
       sslmode: disable
       database: postgres
 
-    # SQL string. Parameters are name-based (not positional) and must be
-    # prefixed with a colon. See `:category_id` in the query below for an example.
-    # Must return single row, single column
     sql: >
-        select count(*) from temperature where data >= '22' AND data < '25'
+        SELECT AVG(CAST(data as INT)) FROM temperature
 
-    # The time between query execution. This should be set relative to the frequency
-    # of expected updates and the required granularity of changes.
-    interval: 5s
+    interval: 15s
 
-- increasing_temperature:
+- average_humidity:
     # Name of the driver to use.
     driver: postgresql
 
@@ -88,7 +66,66 @@
       host: postgres
       port: 5432
       user: postgres
-      password: ""
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+    sql: >
+        SELECT AVG(CAST(data as INT)) FROM humidity
+
+    interval: 15s
+
+
+- maximum_temperature_per_device:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+    sql: >
+        SELECT device_id, MAX(CAST(data as INT)) as avg FROM temperature GROUP BY device_id
+
+    interval: 15s
+
+    data-field: avg
+
+- minimum_temperature_per_device:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+    sql: >
+        SELECT device_id, MIN(CAST(data as INT)) as avg FROM temperature GROUP BY device_id
+
+    interval: 15s
+    data-field: avg
+    
+
+- num_records_above_30_degrees_per_device:
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
       sslmode: disable
       database: postgres
 
@@ -96,8 +133,191 @@
     # prefixed with a colon. See `:category_id` in the query below for an example.
     # Must return single row, single column
     sql: >
-        select count(*) from temperature where data >= '25' AND data < '30'
+        select device_id, count(data) as cnt from temperature where data > '30' GROUP BY device_id
 
     # The time between query execution. This should be set relative to the frequency
     # of expected updates and the required granularity of changes.
     interval: 5s
+
+    data-field: cnt
+
+## Same queries will be presented for the humidity...
+
+
+## Operations queries
+- success_rate_percentage:
+  
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT (SUM(sucess_rate_material) / SUM(total_input_material_quantity)) * 100 as result FROM machine_operations
+
+
+    interval: 5s
+
+- defect_rate_percentage:
+  
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT (SUM(defect_rate_material) / SUM(total_input_material_quantity)) * 100 as result FROM machine_operations
+
+
+    interval: 5s
+
+- total_material_sum:
+  
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT SUM(total_input_material_quantity) FROM machine_operations
+
+
+    interval: 5s
+
+
+- total_operations_count:
+  
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT COUNT(1) FROM machine_operations
+
+
+    interval: 5s
+
+- employees_details:
+  
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT name, SUM(defect_rate_material) as defect_rate, SUM(sucess_rate_material) as success_rate, SUM(total_working_hours) as working_hours
+        from machine_operations o
+        INNER JOIN employees e on e.id=o.employee_id
+        GROUP BY name
+
+    interval: 5s
+
+- operations_count_by_date:
+    
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT cast(created_at as date) as operations_date, COUNT(*) as operations_count FROM 
+        machine_operations group by operations_date
+    
+    interval: 5s
+
+    data-field: operations_count
+
+- success_rate_per_machine:
+    
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT m.location as machine, SUM(sucess_rate_material) as success_rate from machine_operations o
+        INNER JOIN machines m on m.machine_number = o.machine_id
+        GROUP BY m.location
+    
+    interval: 5s
+    data-field: success_rate
+
+- defect_rate_per_machine:
+    
+    # Name of the driver to use.
+    driver: postgresql
+
+    # Connection information.
+    connection:
+      host: postgres
+      port: 5432
+      user: postgres
+      password: iloveiot
+      sslmode: disable
+      database: postgres
+
+
+    sql: >
+        SELECT m.location as machine, SUM(defect_rate_material) as defect_rate from machine_operations o
+        INNER JOIN machines m on m.machine_number = o.machine_id
+        GROUP BY m.location
+    
+    interval: 5s
+    data-field: defect_rate

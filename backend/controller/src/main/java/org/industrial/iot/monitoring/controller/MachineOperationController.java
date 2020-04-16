@@ -1,8 +1,6 @@
 package org.industrial.iot.monitoring.controller;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,20 +41,20 @@ public class MachineOperationController {
                                                        @RequestParam(required = false, name = "statistics") String statistics) {
         LOGGER.info("Search type: " + searchType);
         LOGGER.info("Statistics: " + statistics);
-        if ("employee".equals(searchType)) {
-            if (statistics != null && Boolean.valueOf(statistics)) {
-                return Arrays.asList(getOverallStatisticsForEmployee(criteria));
-            }
-            return machineOperationRepository.findAllByEmployeeId(criteria);
-        }
-
-        if ("machine".equals(searchType)) {
-            return machineOperationRepository.findAllByMachineId(criteria);
-        }
-
-        if (statistics != null && Boolean.valueOf(statistics)) {
-            return Arrays.asList(getOverallStatistics());
-        }
+//        if ("employee".equals(searchType)) {
+//            if (statistics != null && Boolean.valueOf(statistics)) {
+//                return Arrays.asList(getOverallStatisticsForEmployee(criteria));
+//            }
+//            return machineOperationRepository.findAllByEmployeeId(criteria);
+//        }
+//
+//        if ("machine".equals(searchType)) {
+//            return machineOperationRepository.findAllByMachineId(criteria);
+//        }
+//
+//        if (statistics != null && Boolean.valueOf(statistics)) {
+//            return Arrays.asList(getOverallStatistics());
+//        }
 
         return machineOperationRepository.findAll();
     }
@@ -96,7 +93,7 @@ public class MachineOperationController {
     }
 
     private MachineOperation getOverallStatisticsForEmployee(String criteria) {
-        List<MachineOperation> allOperationsByEmployee = machineOperationRepository.findAllByEmployeeId(criteria);
+        List<MachineOperation> allOperationsByEmployee = machineOperationRepository.findAll();
         MachineOperation result = new MachineOperation();
         for (MachineOperation machineOperation : allOperationsByEmployee) {
             result.setSucessRateMaterial(result.getSucessRateMaterial() + machineOperation.getSucessRateMaterial());

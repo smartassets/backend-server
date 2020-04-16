@@ -1,9 +1,12 @@
 package org.industrial.iot.monitoring.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +22,9 @@ public class Employee extends AuditModel {
 
     @Enumerated(EnumType.STRING)
     private EmployeePosition position;
+    
+    @OneToMany(mappedBy="employee")
+    private List<MachineOperation> employeeOperations;
 
     public Employee() {
     }

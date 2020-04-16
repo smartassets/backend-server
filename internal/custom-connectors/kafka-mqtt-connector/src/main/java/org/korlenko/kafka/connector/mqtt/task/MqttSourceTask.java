@@ -1,5 +1,8 @@
 package org.korlenko.kafka.connector.mqtt.task;
 
+import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.DB_CONNECTION_PASSWORD;
+import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.DB_CONNECTION_URL;
+import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.DB_CONNECTION_USERNAME;
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.KAFKA_TOPIC_TEMPLATE;
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.MESSAGE_PROCESSOR_CLASS;
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.MQTT_CLEAN_SESSION;
@@ -9,6 +12,12 @@ import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfigur
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.MQTT_QUALITY_OF_SERVICE;
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.MQTT_SERVER_URIS;
 import static org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration.MQTT_TOPIC;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
@@ -21,15 +30,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.korlenko.kafka.connector.mqtt.configuration.MqttSourceConfiguration;
 import org.korlenko.kafka.connector.mqtt.helper.VersionHelper;
+import org.korlenko.kafka.connector.mqtt.processor.DatabaseMqttProcessor;
 import org.korlenko.kafka.connector.mqtt.processor.MqttProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Kafka connect source task implementation that reads from MQTT and generates Kafka connect records
@@ -71,7 +75,8 @@ public class MqttSourceTask extends SourceTask implements MqttCallback {
         connectOptions.setCleanSession(configuration.getBoolean(MQTT_CLEAN_SESSION));
         connectOptions.setConnectionTimeout(configuration.getInt(MQTT_CONNECTION_TIMEOUT));
         connectOptions.setKeepAliveInterval(configuration.getInt(MQTT_KEEP_ALIVE_INTERVAL));
-        connectOptions.setServerURIs(configuration.getString(MQTT_SERVER_URIS).split(","));
+        connectOptions.setServerURIs(configuration.getString(MQTT_SERVER_URIS)
+                                                  .split(","));
         try {
             mqttClient = new MqttClient(mqttBroker, mqttClientId, new MemoryPersistence());
             mqttClient.setCallback(this);
@@ -82,7 +87,8 @@ public class MqttSourceTask extends SourceTask implements MqttCallback {
 
         }
         try {
-            String[] mqttTopics = configuration.getString(MQTT_TOPIC).split(",");
+            String[] mqttTopics = configuration.getString(MQTT_TOPIC)
+                                               .split(",");
             Integer qos = configuration.getInt(MQTT_QUALITY_OF_SERVICE);
             for (String mqttTopic : mqttTopics) {
                 mqttClient.subscribe(mqttTopic, qos);
@@ -94,13 +100,11 @@ public class MqttSourceTask extends SourceTask implements MqttCallback {
     }
 
     /**
-     * Polls the source task for new records
-     * The method is blocked in case if no data in mqttMessages
+     * Polls the source task for new records The method is blocked in case if no data in mqttMessages
      *
      * @return a source records list
-     * @throws InterruptedException thread is waiting, sleeping, or otherwise occupied,
-     *                              and the thread is interrupted, either before or during the
-     *                              activity
+     * @throws InterruptedException thread is waiting, sleeping, or otherwise occupied, and the thread is interrupted, either before or
+     *         during the activity
      */
     public List<SourceRecord> poll() throws InterruptedException {
         logger.debug("Polling new data from queue for '{}' topics.", mqttClientId);
@@ -137,20 +141,25 @@ public class MqttSourceTask extends SourceTask implements MqttCallback {
     /**
      * This method is called when a message arrives from the server.
      *
-     * @param topic       name of the topic on the message was published to
+     * @param topic name of the topic on the message was published to
      * @param mqttMessage the actual message.
      */
     public void messageArrived(String topic, MqttMessage mqttMessage) {
         logger.debug("New message on '{}' arrived.", mqttClientId, topic);
-        mqttMessages.add(
-                configuration.getConfiguredInstance(MESSAGE_PROCESSOR_CLASS, MqttProcessor.class)
-                        .process(topic, mqttMessage)
-        );
+        mqttMessages.add(getMqttProcessor().process(topic, mqttMessage));
+    }
+    
+    private MqttProcessor getMqttProcessor() {
+        MqttProcessor mqttProcessor = configuration.getConfiguredInstance(MESSAGE_PROCESSOR_CLASS, MqttProcessor.class);
+        if (mqttProcessor instanceof DatabaseMqttProcessor) {
+            DatabaseMqttProcessor databaseMqttProcessor = (DatabaseMqttProcessor) mqttProcessor;
+            databaseMqttProcessor.setDatabaseConnectionDetails(configuration.getString(DB_CONNECTION_URL), configuration.getString(DB_CONNECTION_USERNAME), configuration.getString(DB_CONNECTION_PASSWORD));
+        }
+        return mqttProcessor;
     }
 
     /**
-     * Called when delivery for a message has been completed, and all acknowledgments have been
-     * received.
+     * Called when delivery for a message has been completed, and all acknowledgments have been received.
      *
      * @param iMqttDeliveryToken the delivery token associated with the message.
      */

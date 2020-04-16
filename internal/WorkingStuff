@@ -25,7 +25,7 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": true,
 
-    "connection.url": "jdbc:postgresql://postgres:5432/postgres?user=postgres",
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres?user=postgres&password=iloveiot",
     "auto.create": "true",
     "topics": "temperature"
     }
@@ -93,7 +93,7 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
 
     "connection.url": "jdbc:postgresql://postgres:5432/postgres",
     "connection.user": "postgres",
-    "connection.password": "",
+    "connection.password": iloveiot,
     "auto.create": "true",
     "topics": "dust"
     }
@@ -103,14 +103,14 @@ curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connec
 curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d '{
     "name" : "jdbc-sink-humidity",
 "config" : {
-    "connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connector.class" : "io.aiven.connect.jdbc.JdbcSinkConnector",
 
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": true,
 
     "connection.url": "jdbc:postgresql://postgres:5432/postgres",
     "connection.user": "postgres",
-    "connection.password": "",
+    "connection.password": "iloveiot",
     "auto.create": "true",
     "topics": "humidity"
     }
