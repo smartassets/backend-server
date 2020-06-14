@@ -6,7 +6,7 @@
 
     # Connection information.
     connection: &db
-      host: localhost
+      host: postgres
       port: 5432
       user: postgres
       password: iloveiot

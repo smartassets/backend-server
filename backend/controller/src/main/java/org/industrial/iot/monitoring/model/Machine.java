@@ -30,7 +30,6 @@ public class Machine extends AuditModel {
     }
 
     public Machine(String machineNumber, String location, MachineType type) {
-        super();
         this.machineNumber = machineNumber;
         this.location = location;
         this.type = type;

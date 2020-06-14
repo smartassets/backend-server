@@ -7,6 +7,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.industrial.iot.monitoring.model.MachineOperation;
+import org.industrial.iot.monitoring.model.MachineOperationParameter;
+import org.industrial.iot.monitoring.repository.MachineOperationParameterRepository;
 import org.industrial.iot.monitoring.repository.MachineOperationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +32,17 @@ public class MachineOperationController {
     @Autowired
     private MachineOperationRepository machineOperationRepository;
 
+    @Autowired
+    private MachineOperationParameterRepository parameterReposiotry;
+    
     @PostMapping("/api/operations")
     public MachineOperation registerMachineOperation(@Valid @RequestBody MachineOperation device) {
         return machineOperationRepository.save(device);
+    }
+    
+    @PostMapping("/api/operations/parameters")
+    public long regineMachineOperationParameter(@Valid @RequestBody MachineOperationParameter parameter) {
+        return parameterReposiotry.save(parameter).getId();
     }
 
     @RequestMapping(path = "/api/operations", method = RequestMethod.GET)
@@ -41,20 +51,20 @@ public class MachineOperationController {
                                                        @RequestParam(required = false, name = "statistics") String statistics) {
         LOGGER.info("Search type: " + searchType);
         LOGGER.info("Statistics: " + statistics);
-//        if ("employee".equals(searchType)) {
-//            if (statistics != null && Boolean.valueOf(statistics)) {
-//                return Arrays.asList(getOverallStatisticsForEmployee(criteria));
-//            }
-//            return machineOperationRepository.findAllByEmployeeId(criteria);
-//        }
-//
-//        if ("machine".equals(searchType)) {
-//            return machineOperationRepository.findAllByMachineId(criteria);
-//        }
-//
-//        if (statistics != null && Boolean.valueOf(statistics)) {
-//            return Arrays.asList(getOverallStatistics());
-//        }
+        // if ("employee".equals(searchType)) {
+        // if (statistics != null && Boolean.valueOf(statistics)) {
+        // return Arrays.asList(getOverallStatisticsForEmployee(criteria));
+        // }
+        // return machineOperationRepository.findAllByEmployeeId(criteria);
+        // }
+        //
+        // if ("machine".equals(searchType)) {
+        // return machineOperationRepository.findAllByMachineId(criteria);
+        // }
+        //
+        // if (statistics != null && Boolean.valueOf(statistics)) {
+        // return Arrays.asList(getOverallStatistics());
+        // }
 
         return machineOperationRepository.findAll();
     }
@@ -71,7 +81,6 @@ public class MachineOperationController {
         machineOperationRepository.save(operation);
         return ResponseEntity.ok(operation);
     }
-
 
     private MachineOperation getOverallStatistics() {
         List<MachineOperation> allOperations = machineOperationRepository.findAll();

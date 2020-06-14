@@ -185,8 +185,8 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 13,
-        "w": 24,
+        "h": 16,
+        "w": 12,
         "x": 0,
         "y": 7
       },
@@ -286,13 +286,122 @@
       }
     },
     {
-      "cacheTimeout": null,
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "PostgreSQL",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "hiddenSeries": false,
+      "id": 10,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT device_id, \nAVG(CAST(data as INT)) as value, \nmodified::timestamp as time \nFROM humidity \nGROUP BY device_id, time",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Average humidity per device",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "Prometheus",
       "gridPos": {
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 23
       },
       "id": 6,
       "links": [],
@@ -333,45 +442,12 @@
       "pluginVersion": "6.7.2",
       "targets": [
         {
+          "expr": "query_result_maximum_temperature_per_device",
           "format": "time_series",
-          "group": [
-            {
-              "params": [
-                "device_id"
-              ],
-              "type": "column"
-            }
-          ],
-          "metricColumn": "data",
-          "rawQuery": true,
-          "rawSql": "SELECT device_id, \nMAX(CAST(data as INT)) as value, \nmodified::date as time \nFROM temperature \nGROUP BY device_id, time",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "device_id"
-                ],
-                "type": "column"
-              },
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "table": "temperature",
-          "timeColumn": "modified",
-          "timeColumnType": "text",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{device_id}}",
+          "refId": "A"
         }
       ],
       "timeFrom": null,
@@ -398,5 +474,5 @@
   "variables": {
     "list": []
   },
-  "version": 4
+  "version": 5
 }

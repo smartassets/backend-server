@@ -33,9 +33,15 @@ scrape_configs:
   - job_name: 'sql'
     scrape_interval: "5s"
     static_configs:
-      - targets: ['prometheussql:8080']
+      - targets: ['prometheussql:9191']
 
   - job_name: sql_exporter
     scrape_interval: "5s"
     static_configs:
-    - targets: ['sql_exporter:9237']
+
+  - job_name: 'docker'
+         # metrics_path defaults to '/metrics'
+         # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ['cadvisor:8080']

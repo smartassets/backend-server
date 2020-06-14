@@ -21,12 +21,16 @@ public class MachineOperation extends AuditModel {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="employee_id")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name="machine_id")
+    @JoinColumn(name = "machine_id")
     private Machine machine;
+
+    @ManyToOne
+    @JoinColumn(name = "operation_parameter_id")
+    private MachineOperationParameter operationParameter;
     private String inputMaterialType;
     private long totalInputMaterialQuantity;
     private long sucessRateMaterial;
@@ -37,10 +41,14 @@ public class MachineOperation extends AuditModel {
     public MachineOperation() {
     }
 
-    public MachineOperation(Employee employee, Machine machine, String inputMaterialType, long totalInputMaterialQuantity,
-                            long sucessRateMaterial, long defectRateMaterial, long totalWorkingHours) {
+    public MachineOperation(long id, Employee employee, Machine machine, MachineOperationParameter operationParameter,
+                            String inputMaterialType, long totalInputMaterialQuantity, long sucessRateMaterial, long defectRateMaterial,
+                            long totalWorkingHours) {
+        super();
+        this.id = id;
         this.employee = employee;
         this.machine = machine;
+        this.operationParameter = operationParameter;
         this.inputMaterialType = inputMaterialType;
         this.totalInputMaterialQuantity = totalInputMaterialQuantity;
         this.sucessRateMaterial = sucessRateMaterial;
@@ -70,6 +78,14 @@ public class MachineOperation extends AuditModel {
 
     public void setMachine(Machine machine) {
         this.machine = machine;
+    }
+
+    public MachineOperationParameter getOperationParameter() {
+        return operationParameter;
+    }
+
+    public void setOperationParameter(MachineOperationParameter operationParameter) {
+        this.operationParameter = operationParameter;
     }
 
     public String getInputMaterialType() {
@@ -110,6 +126,10 @@ public class MachineOperation extends AuditModel {
 
     public void setTotalWorkingHours(long totalWorkingHours) {
         this.totalWorkingHours = totalWorkingHours;
+    }
+    
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
 }

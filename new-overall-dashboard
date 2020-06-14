@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 5,
   "links": [],
   "panels": [
     {
@@ -117,7 +117,7 @@
                 },
                 {
                   "color": "#E24D42",
-                  "value": 10
+                  "value": 1
                 }
               ]
             },
@@ -425,7 +425,7 @@
     },
     {
       "aliasColors": {},
-      "bars": false,
+      "bars": true,
       "cacheTimeout": null,
       "dashLength": 10,
       "dashes": false,
@@ -444,7 +444,7 @@
         "alignAsTable": true,
         "avg": false,
         "current": true,
-        "max": false,
+        "max": true,
         "min": false,
         "rightSide": false,
         "show": true,
@@ -473,7 +473,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \ncreated_at::date as time,\nSUM(total_working_hours) as value\nFROM machine_operations \ngroup by time\norder by time",
+          "rawSql": "SELECT \ncreated_at::timestamp as time,\nSUM(total_working_hours) as \"Working hours\"\nFROM machine_operations \ngroup by time\norder by time\n",
           "refId": "A",
           "select": [
             [
@@ -539,27 +539,89 @@
       }
     },
     {
+      "columnAliases": [],
+      "columnWidthHints": [],
       "columns": [],
+      "compactRowsEnabled": false,
       "datasource": "PostgreSQL",
+      "datatablePagingType": "simple_numbers",
+      "datatableTheme": "basic_theme",
+      "emptyData": false,
       "fontSize": "100%",
       "gridPos": {
-        "h": 6,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 22
       },
+      "hoverEnabled": true,
       "id": 24,
-      "pageSize": null,
+      "infoEnabled": true,
+      "lengthChangeEnabled": true,
+      "orderColumnEnabled": true,
+      "pagingTypes": [
+        {
+          "text": "Page number buttons only",
+          "value": "numbers"
+        },
+        {
+          "text": "'Previous' and 'Next' buttons only",
+          "value": "simple"
+        },
+        {
+          "text": "'Previous' and 'Next' buttons, plus page numbers",
+          "value": "simple_numbers"
+        },
+        {
+          "text": "'First', 'Previous', 'Next' and 'Last' buttons",
+          "value": "full"
+        },
+        {
+          "text": "'First', 'Previous', 'Next' and 'Last' buttons, plus page numbers",
+          "value": "full_numbers"
+        },
+        {
+          "text": "'First' and 'Last' buttons, plus page numbers",
+          "value": "first_last_numbers"
+        }
+      ],
+      "panelHeight": null,
       "pluginVersion": "6.7.2",
+      "rowNumbersEnabled": false,
+      "rowsPerPage": 5,
+      "scroll": false,
+      "scrollHeight": "default",
+      "searchEnabled": true,
+      "showCellBorders": false,
       "showHeader": true,
+      "showRowBorders": true,
       "sort": {
         "col": 0,
         "desc": true
       },
+      "sortByColumns": [
+        {
+          "columnData": 0,
+          "sortMethod": "desc"
+        }
+      ],
+      "sortByColumnsData": [
+        [
+          0,
+          "desc"
+        ]
+      ],
+      "stripedRowsEnabled": true,
       "styles": [
         {
-          "alias": "",
-          "align": "left",
+          "colorMode": null,
+          "dateFormat": "YYYY-MM-DD",
+          "decimals": 1,
+          "pattern": "Operation number",
+          "splitPattern": "/ /",
+          "type": "string"
+        },
+        {
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -568,6 +630,23 @@
           ],
           "decimals": 2,
           "pattern": "/.*/",
+          "splitPattern": "/ /",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "/.*/",
+          "splitPattern": "/ /",
           "thresholds": [],
           "type": "number",
           "unit": "short"
@@ -601,11 +680,37 @@
           ]
         }
       ],
+      "themeOptions": {
+        "dark": "./styles/dark.scss",
+        "light": "./styles/light.scss"
+      },
+      "themes": [
+        {
+          "disabled": false,
+          "text": "Basic",
+          "value": "basic_theme"
+        },
+        {
+          "disabled": true,
+          "text": "Bootstrap",
+          "value": "bootstrap_theme"
+        },
+        {
+          "disabled": true,
+          "text": "Foundation",
+          "value": "foundation_theme"
+        },
+        {
+          "disabled": true,
+          "text": "ThemeRoller",
+          "value": "themeroller_theme"
+        }
+      ],
       "timeFrom": null,
       "timeShift": null,
       "title": "Machines status",
       "transform": "table",
-      "type": "table"
+      "type": "briangann-datatable-panel"
     }
   ],
   "refresh": false,
