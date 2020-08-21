@@ -1,5 +1,9 @@
+FROM maven as build
+RUN mkdir /usr/monitoring
+COPY controller /usr/monitoring/controller
+RUN mvn clean install -f /usr/monitoring/controller/pom.xml
+
 FROM openjdk
-COPY controller/target/controller-0.0.1-SNAPSHOT.jar /opt/monitoring/lib/controller-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java"]
-CMD ["-jar", "/opt/monitoring/lib/controller-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8082
+COPY --from=build /usr/monitoring/controller/target/controller-0.0.1-SNAPSHOT.jar /usr/monitoring/jars/controller-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java", "-jar", "/usr/monitoring/jars/controller-0.0.1-SNAPSHOT.jar"]
