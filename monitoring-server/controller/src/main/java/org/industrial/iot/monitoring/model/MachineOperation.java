@@ -44,7 +44,6 @@ public class MachineOperation extends AuditModel {
     public MachineOperation(long id, Employee employee, Machine machine, MachineOperationParameter operationParameter,
                             String inputMaterialType, long totalInputMaterialQuantity, long sucessRateMaterial, long defectRateMaterial,
                             long totalWorkingHours) {
-        super();
         this.id = id;
         this.employee = employee;
         this.machine = machine;

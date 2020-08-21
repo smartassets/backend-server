@@ -33,11 +33,7 @@ public class EmployeeController {
     @GetMapping("/api/employees/{id}")
     public Employee getEmployeeById(@PathVariable long id) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
-        if (employeeOptional.isPresent()) {
-            return employeeOptional.get();
-        }
-        
-        return null;
+        return employeeOptional.orElse(null);
     }
 
 }

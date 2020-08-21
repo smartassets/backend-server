@@ -82,35 +82,6 @@ public class MachineOperationController {
         return ResponseEntity.ok(operation);
     }
 
-    private MachineOperation getOverallStatistics() {
-        List<MachineOperation> allOperations = machineOperationRepository.findAll();
-
-        long overallSuccessRate = allOperations.stream()
-                                               .mapToLong(MachineOperation::getSucessRateMaterial)
-                                               .sum();
-        long overallDefectRate = allOperations.stream()
-                                              .mapToLong(MachineOperation::getDefectRateMaterial)
-                                              .sum();
-        long overallMaterial = allOperations.stream()
-                                            .mapToLong(MachineOperation::getTotalInputMaterialQuantity)
-                                            .sum();
-        MachineOperation operation = new MachineOperation();
-        operation.setSucessRateMaterial(overallSuccessRate);
-        operation.setDefectRateMaterial(overallDefectRate);
-        operation.setTotalInputMaterialQuantity(overallMaterial);
-        return operation;
-    }
-
-    private MachineOperation getOverallStatisticsForEmployee(String criteria) {
-        List<MachineOperation> allOperationsByEmployee = machineOperationRepository.findAll();
-        MachineOperation result = new MachineOperation();
-        for (MachineOperation machineOperation : allOperationsByEmployee) {
-            result.setSucessRateMaterial(result.getSucessRateMaterial() + machineOperation.getSucessRateMaterial());
-            result.setDefectRateMaterial(result.getDefectRateMaterial() + machineOperation.getDefectRateMaterial());
-            result.setTotalWorkingHours(result.getTotalWorkingHours() + result.getTotalWorkingHours());
-        }
-        return result;
-    }
 
     private void updateOperation(MachineOperation machineOperation, MachineOperation operation) {
         updateSuccessRate(operation, machineOperation.getSucessRateMaterial());

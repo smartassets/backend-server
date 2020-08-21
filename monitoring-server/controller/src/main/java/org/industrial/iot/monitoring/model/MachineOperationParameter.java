@@ -20,9 +20,6 @@ public class MachineOperationParameter extends AuditModel {
     @Column(name = "id", updatable = false, nullable = false)
     private long id;
 
-//    @OneToMany(mappedBy = "operationParameter")
-//    private List<MachineOperation> operations;
-
     private long rpmUpperSpindle;
     private long rpmLowerSpindle;
     private int oscillationEdge;
@@ -37,7 +34,6 @@ public class MachineOperationParameter extends AuditModel {
                                       int oscillationEdge, int polishingLiquidTemperature, int pressureUpperSpindle,
                                       int operationDetailTimer) {
         this.id = id;
-//        this.operations = operations;
         this.rpmUpperSpindle = rpmUpperSpindle;
         this.rpmLowerSpindle = rpmLowerSpindle;
         this.oscillationEdge = oscillationEdge;

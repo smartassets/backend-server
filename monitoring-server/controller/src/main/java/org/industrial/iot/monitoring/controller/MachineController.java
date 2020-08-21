@@ -32,10 +32,6 @@ public class MachineController {
     @GetMapping("/api/machines/{id}")
     public Machine getMachineById(@PathVariable String id) {
         Optional<Machine> machineOptional = machineRepository.findById(id);
-        if (machineOptional.isPresent()) {
-            return machineOptional.get();
-        }
-        
-        return null;
+        return machineOptional.orElse(null);
     }
 }
