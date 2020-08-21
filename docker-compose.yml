@@ -71,7 +71,7 @@ services:
       CONNECT_PLUGIN_PATH: '/usr/share/java,/etc/kafka-connect/jars'
       CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - ./jars/:/etc/kafka-connect/jars/
+      - ./setup/jars/:/etc/kafka-connect/jars/
     depends_on:
       - zookeeper
       - kafka
@@ -108,7 +108,7 @@ services:
     image: prom/prometheus:v2.1.0
     container_name: prometheus
     volumes:
-     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+     - ./setup/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -145,7 +145,7 @@ services:
       - 9191:9191
     hostname: prometheussql
     volumes:
-      - ./queries.yml:/queries.yml
+      - ./setup/queries.yml:/queries.yml
   monitoring:
     container_name: iot-monitoring
     build:
